@@ -1,0 +1,2 @@
+# practicerepo
+AWS PRIVATE REPO
