@@ -93,7 +93,11 @@ resource "aws_s3_bucket_policy" "allow_cloudfront" {
 resource "aws_iam_openid_connect_provider" "github" {
   url             = "https://token.actions.githubusercontent.com"
   client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1", "1c58a2a851ce2c792f411236b08e85614280111f"]
+  thumbprint_list = [
+    "6938fd4d98bab03faadb97b34396831e3780aea1",
+    "1c58a2a851ce2c792f411236b08e85614280111f",
+    "d89e3bd43d5d909b47a154ec708825634267d00c"
+  ]
 }
 
 resource "aws_iam_role" "github_actions" {

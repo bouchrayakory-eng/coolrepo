@@ -4,13 +4,25 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
+  debug-oidc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print OIDC Claims
+        run: |
+          ACTIONS_ID_TOKEN_REQUEST_URL="${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sts.amazonaws.com"
+          JWT=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL" | jq -r '.value')
+          echo "Decoded OIDC Token Payload:"
+          echo "$JWT" | jq -R 'split(".") | .[1] | @base64d | fromjson'
+
   deploy:
+    needs: debug-oidc
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
