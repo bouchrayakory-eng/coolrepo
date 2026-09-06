@@ -1,0 +1,6 @@
+# Terraform local state and provider binaries
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.terraform.lock.hcl
