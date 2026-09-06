@@ -9,12 +9,12 @@ terraform {
 }
 
 provider "aws" {
-  region = var.aws_region
+  region = "us-east-1"
 }
 
-# 1. S3 Bucket for Static Website
+# 1. S3 Bucket
 resource "aws_s3_bucket" "portfolio" {
-  bucket        = var.bucket_name
+  bucket        = "coolrepo-portfolio-site-bouchraya-2026"
   force_destroy = true
 }
 
@@ -26,7 +26,7 @@ resource "aws_s3_bucket_public_access_block" "portfolio" {
   restrict_public_buckets = true
 }
 
-# 2. CloudFront Origin Access Control (OAC)
+# 2. CloudFront OAC
 resource "aws_cloudfront_origin_access_control" "oac" {
   name                              = "portfolio-oac"
   origin_access_control_origin_type = "s3"
@@ -43,7 +43,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   enabled             = true
-  is_ipv6_enabled     = true
   default_root_object = "index.html"
 
   default_cache_behavior {
@@ -53,21 +52,14 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
     forwarded_values {
       query_string = false
-      cookies {
-        forward = "none"
-      }
+      cookies { forward = "none" }
     }
 
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl                = 0
-    default_ttl            = 3600
-    max_ttl                = 86400
   }
 
   restrictions {
-    geo_restriction {
-      restriction_type = "none"
-    }
+    geo_restriction { restriction_type = "none" }
   }
 
   viewer_certificate {
@@ -75,7 +67,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 }
 
-# S3 Bucket Policy allowing CloudFront Read Access
+# S3 Policy for CloudFront
 resource "aws_s3_bucket_policy" "allow_cloudfront" {
   bucket = aws_s3_bucket.portfolio.id
   policy = jsonencode({
@@ -97,7 +89,7 @@ resource "aws_s3_bucket_policy" "allow_cloudfront" {
   })
 }
 
-# 4. GitHub Actions OIDC IAM Role
+# 4. OIDC Provider and IAM Role
 resource "aws_iam_openid_connect_provider" "github" {
   url             = "https://token.actions.githubusercontent.com"
   client_id_list  = ["sts.amazonaws.com"]
@@ -121,7 +113,7 @@ resource "aws_iam_role" "github_actions" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:${var.github_org_or_user}/${var.github_repo}:*"
+            "token.actions.githubusercontent.com:sub" = "repo:bouchrayakory-eng/coolrepo:*"
           }
         }
       }
