@@ -153,3 +153,168 @@ resource "aws_iam_role_policy" "github_actions_policy" {
     ]
   })
 }
+
+# -----------------------------------------------------------------------------
+# 5. SERVERLESS BACKEND (DynamoDB, Lambda, API Gateway)
+# -----------------------------------------------------------------------------
+
+# DynamoDB Table to store visitor counts
+resource "aws_dynamodb_table" "visitor_count" {
+  name         = "portfolio-visitor-count"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+}
+
+# Seed initial item into DynamoDB
+resource "aws_dynamodb_table_item" "initial_counter" {
+  table_name = aws_dynamodb_table.visitor_count.name
+  hash_key   = aws_dynamodb_table.visitor_count.hash_key
+
+  item = jsonencode({
+    id    = { S = "visitors" }
+    views = { N = "0" }
+  })
+}
+
+# IAM Role for Lambda
+resource "aws_iam_role" "lambda_exec" {
+  name = "portfolio-lambda-execution-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
+        Principal = { Service = "lambda.amazonaws.com" }
+      }
+    ]
+  })
+}
+
+# IAM Policy allowing Lambda to write to DynamoDB and CloudWatch
+resource "aws_iam_role_policy" "lambda_policy" {
+  name = "portfolio-lambda-policy"
+  role = aws_iam_role.lambda_exec.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = ["dynamodb:UpdateItem", "dynamodb:GetItem"]
+        Resource = aws_dynamodb_table.visitor_count.arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
+        Resource = "arn:aws:logs:*:*:*"
+      }
+    ]
+  })
+}
+
+# Zip inline Python Lambda function code
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  output_path = "${path.module}/lambda.zip"
+
+  source {
+    content  = <<PYTHON
+import json
+import os
+import boto3
+
+dynamodb = boto3.resource('dynamodb')
+table_name = os.environ.get('TABLE_NAME')
+table = dynamodb.Table(table_name)
+
+def lambda_handler(event, context):
+    response = table.update_item(
+        Key={'id': 'visitors'},
+        UpdateExpression='ADD views :inc',
+        ExpressionAttributeValues={':inc': 1},
+        ReturnValues='UPDATED_NEW'
+    )
+    
+    views = int(response['Attributes']['views'])
+    
+    return {
+        'statusCode': 200,
+        'headers': {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Methods': 'GET,POST,OPTIONS'
+        },
+        'body': json.dumps({'views': views})
+    }
+PYTHON
+    filename = "lambda_function.py"
+  }
+}
+
+# Lambda Function Definition
+resource "aws_lambda_function" "visitor_counter" {
+  filename         = data.archive_file.lambda_zip.output_path
+  function_name    = "portfolio-visitor-counter"
+  role             = aws_iam_role.lambda_exec.arn
+  handler          = "lambda_function.lambda_handler"
+  runtime          = "python3.11"
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+
+  environment {
+    variables = {
+      TABLE_NAME = aws_dynamodb_table.visitor_count.name
+    }
+  }
+}
+
+# HTTP API Gateway (v2)
+resource "aws_apigatewayv2_api" "http_api" {
+  name          = "portfolio-api"
+  protocol_type = "HTTP"
+
+  cors_configuration {
+    allow_origins = ["*"]
+    allow_methods = ["GET", "POST", "OPTIONS"]
+    allow_headers = ["Content-Type"]
+  }
+}
+
+resource "aws_apigatewayv2_stage" "default" {
+  api_id      = aws_apigatewayv2_api.http_api.id
+  name        = "$default"
+  auto_deploy = true
+}
+
+resource "aws_apigatewayv2_integration" "lambda_integration" {
+  api_id                 = aws_apigatewayv2_api.http_api.id
+  integration_type       = "AWS_PROXY"
+  integration_uri        = aws_lambda_function.visitor_counter.invoke_arn
+  integration_method     = "POST"
+  payload_format_version = "2.0"
+}
+
+resource "aws_apigatewayv2_route" "visitor_route" {
+  api_id    = aws_apigatewayv2_api.http_api.id
+  route_key = "GET /visitors"
+  target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+}
+
+resource "aws_lambda_permission" "api_gateway" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.visitor_counter.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
+}
+
+output "api_endpoint" {
+  value       = "${aws_apigatewayv2_api.http_api.api_endpoint}/visitors"
+  description = "The HTTP API Endpoint for fetching visitor count"
+}
