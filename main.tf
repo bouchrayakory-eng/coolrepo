@@ -231,28 +231,37 @@ import os
 import boto3
 
 dynamodb = boto3.resource('dynamodb')
-table_name = os.environ.get('TABLE_NAME')
+table_name = os.environ.get('TABLE_NAME', 'portfolio-visitor-count')
 table = dynamodb.Table(table_name)
 
 def lambda_handler(event, context):
-    response = table.update_item(
-        Key={'id': 'visitors'},
-        UpdateExpression='ADD views :inc',
-        ExpressionAttributeValues={':inc': 1},
-        ReturnValues='UPDATED_NEW'
-    )
-    
-    views = int(response['Attributes']['views'])
-    
-    return {
-        'statusCode': 200,
-        'headers': {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Methods': 'GET,POST,OPTIONS'
-        },
-        'body': json.dumps({'views': views})
-    }
+    try:
+        response = table.update_item(
+            Key={'id': 'visitors'},
+            UpdateExpression='ADD #v :inc',
+            ExpressionAttributeNames={'#v': 'views'},
+            ExpressionAttributeValues={':inc': 1},
+            ReturnValues='UPDATED_NEW'
+        )
+        
+        views = int(response['Attributes']['views'])
+        
+        return {
+            'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'GET,POST,OPTIONS'
+            },
+            'body': json.dumps({'views': views})
+        }
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return {
+            'statusCode': 500,
+            'headers': {'Access-Control-Allow-Origin': '*'},
+            'body': json.dumps({'error': str(e)})
+        }
 PYTHON
     filename = "lambda_function.py"
   }
