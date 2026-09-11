@@ -1,22 +1,377 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Portfolio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouchraya Kory | Cloud & DevOps Engineer</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { padding-top: 70px; }
+        .hero-section { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; padding: 100px 0; }
+        .card-custom { border: none; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .badge-tech { background-color: #e2e8f0; color: #334155; margin-right: 4px; margin-bottom: 6px; display: inline-block; font-size: 0.85rem; }
+        .badge-lang { background-color: #dbeafe; color: #1e40af; font-weight: 600; margin-right: 6px; font-size: 0.9rem; }
+        section { padding: 60px 0; }
+        .tradeoff-box { background-color: #f8fafc; border-left: 4px solid #0284c7; padding: 14px 18px; margin-top: 12px; border-radius: 0 8px 8px 0; }
+        .arch-diagram-box { background: #0f172a; border-radius: 12px; padding: 30px; color: white; }
+        .arch-node { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 15px; text-align: center; }
+    </style>
 </head>
-<body>
-  <h1>Welcome to My Portfolio</h1>
-  <p>Live visitors: <span id="visitor-count">Loading...</span></p>
+<body class="bg-light" data-bs-spy="scroll" data-bs-target="#navbar-main" data-bs-offset="80">
 
-  <script>
-    const apiEndpoint = "https://j8wv5w9i01.execute-api.us-east-1.amazonaws.com/visitors";
+    <!-- Sticky Navigation Bar -->
+    <nav id="navbar-main" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#home"><i class="fa-solid fa-cloud me-2 text-primary"></i>Bouchraya Kory</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About & Goals</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#value">Strengths & Value</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">Architecture & Challenges</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experience">Experience & Education</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">Skills & Languages</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    fetch(apiEndpoint)
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('visitor-count').innerText = data.views;
-      })
-      .catch(err => console.error("Error fetching views:", err));
-  </script>
+    <!-- SECTION 1: HOME -->
+    <header id="home" class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-3">Hi, I'm Bouchraya Kory</h1>
+            <p class="lead text-light opacity-75 mb-4 mx-auto" style="max-width: 750px;">
+                Cloud & DevOps Engineer passionate about transforming infrastructure pain points into resilient, automated, and secure AWS platforms.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#projects" class="btn btn-primary btn-lg"><i class="fa-solid fa-diagram-project me-2"></i>Explore Live Projects</a>
+                <a href="#contact" class="btn btn-outline-light btn-lg"><i class="fa-solid fa-envelope me-2"></i>Get In Touch</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 2: ABOUT ME & MY GOALS -->
+    <section id="about" class="container">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-user-gear text-primary me-2"></i>About Me & Why I Chose Cloud</h2>
+                <p class="text-secondary">
+                    My path into Cloud Engineering comes from a strong analytical and operations engineering background. Experiencing firsthand how legacy IT architectures create operational friction made me fall in love with AWS and cloud-native computing.
+                </p>
+                <p class="text-secondary">
+                    Treating infrastructure strictly as code empowers me to build reliable systems that scale on-demand, self-heal under load, and maintain robust security standards automatically.
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <div class="card card-custom p-4 bg-white border-start border-4 border-primary">
+                    <h3 class="h5 fw-bold text-dark mb-3"><i class="fa-solid fa-bullseye text-danger me-2"></i>My Goals</h3>
+                    <ul class="text-secondary mb-0">
+                        <li class="mb-2"><strong>Short-Term:</strong> Secure a Cloud Engineer / DevOps Specialist role where I can actively design, automate, and manage enterprise AWS infrastructure.</li>
+                        <li class="mb-2"><strong>Mid-Term:</strong> Deepen expertise in GitOps workflows, Kubernetes container orchestration (EKS), and advanced SRE practices.</li>
+                        <li><strong>Long-Term:</strong> Architect high-resilience multi-region cloud systems that deliver 99.99% availability while continually optimizing cloud spend.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: STRENGTHS & VALUE TO COMPANIES -->
+    <section id="value" class="bg-white">
+        <div class="container">
+            <h2 class="fw-bold mb-4 text-dark text-center"><i class="fa-solid fa-handshake text-primary me-2"></i>Strengths & What I Offer Your Organization</h2>
+            
+            <div class="row g-4 mt-2">
+                <div class="col-md-6">
+                    <div class="card card-custom h-100 p-4">
+                        <h3 class="h5 fw-bold text-dark mb-3"><i class="fa-solid fa-shield-halved text-success me-2"></i>My Key Strengths</h3>
+                        <ul class="text-secondary mb-0">
+                            <li class="mb-2"><strong>Infrastructure as Code Mindset:</strong> Committed to managing 100% of resources declaratively using Terraform to eliminate configuration drift.</li>
+                            <li class="mb-2"><strong>Pragmatic Problem Solver:</strong> Experienced in systematically diagnosing complex failures across CDNs, load balancers, security groups, and containers.</li>
+                            <li class="mb-2"><strong>Automation-First Approach:</strong> Focused on hands-off CI/CD pipelines that automate linting, building, image pushing, and deployments safely.</li>
+                            <li><strong>Continuous Learning:</strong> Rapidly adapting to emerging cloud technologies, tools, and architectural patterns.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card card-custom h-100 p-4">
+                        <h3 class="h5 fw-bold text-dark mb-3"><i class="fa-solid fa-chart-line text-info me-2"></i>What I Can Provide to Any Team</h3>
+                        <ul class="text-secondary mb-0">
+                            <li class="mb-2"><strong>Reliable Deployments:</strong> Production-ready CI/CD pipelines that reduce manual effort and speed up release cycles.</li>
+                            <li class="mb-2"><strong>Cost Optimization:</strong> Ability to weigh architectural trade-offs (e.g., Serverless Lambda vs. ECS Fargate vs. EC2) to balance performance against AWS cost.</li>
+                            <li class="mb-2"><strong>Enhanced Security Posture:</strong> Implementation of least-privilege IAM policies, secure CloudFront origin access control (OAC), and isolated networking.</li>
+                            <li><strong>Clear Documentation & Ownership:</strong> Detailed architecture diagrams, complete READMEs, and strong operational accountability.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: PROJECTS & ARCHITECTURE -->
+    <section id="projects" class="container">
+        <h2 class="fw-bold mb-4 text-dark"><i class="fa-solid fa-cubes text-primary me-2"></i>Featured Work, Architecture & Challenges</h2>
+
+        <!-- Visual Architecture Diagram -->
+        <div class="arch-diagram-box mb-5">
+            <h4 class="fw-bold mb-4 text-center text-light"><i class="fa-solid fa-sitemap me-2 text-warning"></i>System Architecture Diagram</h4>
+            
+            <div class="row g-3 align-items-center text-center">
+                <!-- User -->
+                <div class="col-md-2">
+                    <div class="arch-node">
+                        <i class="fa-solid fa-user-astronaut fa-2x text-info mb-2"></i>
+                        <h6>Client Browser</h6>
+                    </div>
+                </div>
+                <div class="col-md-1"><i class="fa-solid fa-arrow-right fa-xl text-muted"></i></div>
+                <!-- CloudFront -->
+                <div class="col-md-3">
+                    <div class="arch-node">
+                        <i class="fa-solid fa-bolt-lightning fa-2x text-warning mb-2"></i>
+                        <h6>AWS CloudFront CDN</h6>
+                        <small class="text-muted d-block">HTTPS / Dual-Origin</small>
+                    </div>
+                </div>
+                <div class="col-md-1"><i class="fa-solid fa-arrow-right fa-xl text-muted"></i></div>
+                <!-- Origins Split -->
+                <div class="col-md-5">
+                    <div class="arch-node mb-3">
+                        <i class="fa-solid fa-box-archive fa-lg text-primary me-2"></i>
+                        <strong>S3 Static Origin (/*)</strong>
+                    </div>
+                    <div class="arch-node">
+                        <i class="fa-solid fa-network-wired fa-lg text-success me-2"></i>
+                        <strong>ALB ➔ ECS Fargate (/api/*)</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <small class="text-muted"><i class="fa-solid fa-arrows-split-up-and-left me-1"></i> Async Counter Path: Client ➔ API Gateway ➔ AWS Lambda ➔ DynamoDB Table</small>
+            </div>
+        </div>
+
+        <!-- Project Breakdown: Frontend vs Backend -->
+        <div class="card card-custom p-4 mb-5 bg-white">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h3 class="h4 fw-bold">Cloud Resume Challenge (Hybrid Serverless & Containers)</h3>
+                    <p class="text-muted">An automated, production-grade web platform backed by Terraform and GitHub Actions.</p>
+
+                    <!-- FRONTEND BREAKDOWN -->
+                    <div class="mt-4">
+                        <h5 class="h6 fw-bold text-primary"><i class="fa-solid fa-laptop-code me-2"></i>Frontend Architecture & Challenges</h5>
+                        <p class="text-secondary mb-2"><strong>Services Used:</strong> AWS S3, AWS CloudFront (OAC), Bootstrap 5, Vanilla JavaScript.</p>
+                        
+                        <div class="tradeoff-box">
+                            <strong>Challenge 1: S3 Public Bucket Exposure & Security</strong><br>
+                            <small class="text-secondary"><strong>Resolution:</strong> Disabled all public bucket access on S3. Created CloudFront Origin Access Control (OAC) so static web assets are accessible exclusively via edge CDN endpoints over HTTPS.</small>
+                        </div>
+
+                        <div class="tradeoff-box">
+                            <strong>Challenge 2: Cross-Origin Resource Sharing (CORS) & Mixed Content</strong><br>
+                            <small class="text-secondary"><strong>Resolution:</strong> Proxying requests directly to an HTTP ALB from an HTTPS frontend caused mixed-content errors. Routed  requests through CloudFront's secondary origin path to serve both static UI and container APIs under a single HTTPS domain.</small>
+                        </div>
+                    </div>
+
+                    <!-- BACKEND BREAKDOWN -->
+                    <div class="mt-4">
+                        <h5 class="h6 fw-bold text-success"><i class="fa-solid fa-server me-2"></i>Backend Architecture & Service Trade-Offs</h5>
+                        <p class="text-secondary mb-2"><strong>Services Used:</strong> AWS ECS Fargate, ALB, ECR, AWS Lambda, DynamoDB, API Gateway.</p>
+
+                        <div class="tradeoff-box">
+                            <strong>Service Selection: ECS Fargate vs. EC2</strong><br>
+                            <small class="text-secondary">Chose ECS Fargate over EC2 instances to eliminate server management overhead, OS patching, and capacity planning. Fargate provisions and scales container tasks on demand.</small>
+                        </div>
+
+                        <div class="tradeoff-box">
+                            <strong>Service Selection: DynamoDB vs. Relational RDS</strong><br>
+                            <small class="text-secondary">Selected DynamoDB for visitor tracking due to its single-digit millisecond latency, serverless scaling, and zero base cost compared to maintaining an idle RDS instance.</small>
+                        </div>
+
+                        <div class="tradeoff-box">
+                            <strong>Challenge: ALB Host Header Drop & 502 Gateway Errors</strong><br>
+                            <small class="text-secondary"><strong>Resolution:</strong> CloudFront forwarded incoming Host headers by default, causing the ALB default listener to reject traffic. Configured custom  in Terraform to whitelist only specific request headers.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Status Indicators -->
+                <div class="col-lg-4 border-start ps-lg-4 mt-4 mt-lg-0">
+                    <h5 class="h6 fw-bold text-secondary mb-3">Live Integration Telemetry</h5>
+                    
+                    <div class="p-3 bg-light rounded mb-3">
+                        <small class="text-muted d-block">Serverless Visitor Counter</small>
+                        <span class="fw-bold">Views: </span>
+                        <span id="visitor-count" class="badge bg-success">Loading...</span>
+                    </div>
+
+                    <div class="p-3 bg-light rounded mb-4">
+                        <small class="text-muted d-block">Fargate Microservice Status</small>
+                        <span class="fw-bold">API Message: </span>
+                        <span id="fargate-message" class="badge bg-info text-dark">Connecting...</span>
+                    </div>
+
+                    <h6 class="fw-bold text-dark mb-2">Tech Stack Logos</h6>
+                    <div class="d-flex flex-wrap gap-2 fs-3 text-secondary">
+                        <i class="fa-brands fa-aws text-warning" title="AWS"></i>
+                        <i class="fa-brands fa-docker text-primary" title="Docker"></i>
+                        <i class="fa-brands fa-python text-success" title="Python"></i>
+                        <i class="fa-brands fa-git-alt text-danger" title="Git"></i>
+                        <i class="fa-brands fa-github text-dark" title="GitHub Actions"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: EXPERIENCE & EDUCATION -->
+    <section id="experience" class="bg-white">
+        <div class="container">
+            <h2 class="fw-bold mb-4 text-dark"><i class="fa-solid fa-briefcase text-primary me-2"></i>Work Experience & Education</h2>
+            <div class="row g-4">
+                
+                <!-- Experience -->
+                <div class="col-md-7">
+                    <!-- Role 1 -->
+                    <div class="card card-custom p-4 mb-4 border-start border-4 border-primary">
+                        <h4 class="h5 fw-bold text-dark mb-1">Fiber Operations Support Engineer</h4>
+                        <p class="text-primary fw-semibold mb-1">Meta</p>
+                        <small class="text-muted d-block mb-3"><i class="fa-regular fa-calendar me-1"></i>2024 - 2026</small>
+                        <ul class="text-secondary mb-0">
+                            <li>Managed critical optical fiber network infrastructure and operational health across large-scale data center environments.</li>
+                            <li>Diagnosed physical and logical network outages, coordinated emergency incident responses, and minimized network downtime.</li>
+                            <li>Automated operational status tracking and telemetry reporting using custom scripting tools.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Role 2 -->
+                    <div class="card card-custom p-4 border-start border-4 border-info">
+                        <h4 class="h5 fw-bold text-dark mb-1">Operations Analyst</h4>
+                        <p class="text-info fw-semibold mb-1">Meta</p>
+                        <small class="text-muted d-block mb-3"><i class="fa-regular fa-calendar me-1"></i>2022 - 2024</small>
+                        <ul class="text-secondary mb-0">
+                            <li>Analyzed large-scale operational workflows, identifying network delivery bottlenecks and optimizing resource allocation.</li>
+                            <li>Built data reporting dashboards to track vendor performance SLAs and operational efficiency metrics.</li>
+                            <li>Collaborated with cross-functional engineering teams to streamline escalation pathways for critical infrastructure issues.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Education & Certifications -->
+                <div class="col-md-5">
+                    <div class="card card-custom p-4 h-100 bg-light">
+                        <h4 class="h5 fw-bold text-dark mb-3"><i class="fa-solid fa-graduation-cap text-success me-2"></i>Education & Credentials</h4>
+                        
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-1">AWS Certified Solutions Architect – Associate Course</h6>
+                            <small class="text-primary fw-semibold d-block">AWS Training & Certification (2026)</small>
+                            <small class="text-secondary">Comprehensive study of high-availability, fault-tolerant, and cost-effective multi-tier AWS architectures.</small>
+                        </div>
+
+                        <div>
+                            <h6 class="fw-bold mb-1">Bachelor of Science (B.Sc.)</h6>
+                            <small class="text-primary fw-semibold d-block">University (2018)</small>
+                            <small class="text-secondary">Strong foundation in scientific principles, analytical problem solving, and quantitative data analysis.</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: SKILLS & LANGUAGES -->
+    <section id="skills" class="container">
+        <h2 class="fw-bold mb-4 text-dark"><i class="fa-solid fa-code text-primary me-2"></i>Technical Skills & Languages</h2>
+        
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card card-custom p-3 text-center bg-white">
+                    <i class="fa-brands fa-aws fa-3x text-warning mb-2"></i>
+                    <h5 class="h6 fw-bold">AWS Cloud</h5>
+                    <small class="text-muted">CloudFront, S3, ECS Fargate, Lambda, DynamoDB, ALB, VPC</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-custom p-3 text-center bg-white">
+                    <i class="fa-solid fa-layer-group fa-3x text-primary mb-2"></i>
+                    <h5 class="h6 fw-bold">Infrastructure as Code</h5>
+                    <small class="text-muted">Terraform, HCL Modules, State Management</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-custom p-3 text-center bg-white">
+                    <i class="fa-brands fa-docker fa-3x text-info mb-2"></i>
+                    <h5 class="h6 fw-bold">Containers & CI/CD</h5>
+                    <small class="text-muted">Docker, Amazon ECR, GitHub Actions Workflows</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-custom p-3 text-center bg-white">
+                    <i class="fa-brands fa-python fa-3x text-success mb-2"></i>
+                    <h5 class="h6 fw-bold">Development</h5>
+                    <small class="text-muted">Python, Flask REST APIs, JavaScript, Bash Scripting</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Languages -->
+        <div class="card card-custom p-4 bg-white">
+            <h5 class="fw-bold mb-3"><i class="fa-solid fa-language me-2 text-primary"></i>Languages</h5>
+            <div>
+                <span class="badge badge-lang"><i class="fa-solid fa-comments me-1"></i>Spanish (Native)</span>
+                <span class="badge badge-lang"><i class="fa-solid fa-comments me-1"></i>Arabic (Native)</span>
+                <span class="badge badge-lang"><i class="fa-solid fa-comments me-1"></i>English (Professional / High Level)</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: CONTACT -->
+    <section id="contact" class="bg-dark text-white">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-3">Get In Touch</h2>
+            <p class="text-light opacity-75 mb-4">Interested in discussing cloud engineering opportunities or infrastructure projects?</p>
+            <div class="d-flex justify-content-center align-items-center gap-4">
+                <a href="https://github.com/bouchrayakory-eng" target="_blank" class="text-white fs-2" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/bouchraya-kory-33043219a?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="text-white fs-2" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="mailto:bouchrayakory@gmail.com" class="text-white fs-2" title="Email"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+            <p class="mt-4 text-muted mb-0">Email: bouchrayakory@gmail.com</p>
+        </div>
+    </section>
+
+    <!-- Bootstrap & Live API JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/bootstrap.bundle.min.js"></script>
+    <script>
+        const LAMBDA_COUNTER_URL = "https://j8wv5w9i01.execute-api.us-east-1.amazonaws.com/visitors";
+        const FARGATE_ALB_URL = "/api/data";
+
+        // Fetch Serverless Visitor Count
+        fetch(LAMBDA_COUNTER_URL)
+            .then(res => res.json())
+            .then(data => { document.getElementById('visitor-count').innerText = data.views; })
+            .catch(err => {
+                document.getElementById('visitor-count').innerText = "Offline";
+                document.getElementById('visitor-count').className = "badge bg-danger";
+            });
+
+        // Fetch Microservice Status
+        fetch(FARGATE_ALB_URL)
+            .then(res => res.json())
+            .then(data => { document.getElementById('fargate-message').innerText = data.message; })
+            .catch(err => {
+                document.getElementById('fargate-message').innerText = "Unavailable";
+                document.getElementById('fargate-message').className = "badge bg-danger";
+            });
+    </script>
 </body>
 </html>
