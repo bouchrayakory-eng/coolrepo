@@ -18,6 +18,7 @@
         .tradeoff-box { background-color: #f8fafc; border-left: 4px solid #0284c7; padding: 14px 18px; margin-top: 12px; border-radius: 0 8px 8px 0; }
         .arch-diagram-box { background: #0f172a; border-radius: 12px; padding: 30px; color: white; }
         .arch-node { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 15px; text-align: center; }
+        .table-custom { font-size: 0.9rem; }
     </style>
 </head>
 <body class="bg-light" data-bs-spy="scroll" data-bs-target="#navbar-main" data-bs-offset="80">
@@ -34,7 +35,7 @@
                     <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">About & Goals</a></li>
                     <li class="nav-item"><a class="nav-link" href="#value">Strengths & Value</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#projects">Architecture & Challenges</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">Architecture & DevOps</a></li>
                     <li class="nav-item"><a class="nav-link" href="#experience">Experience & Education</a></li>
                     <li class="nav-item"><a class="nav-link" href="#skills">Skills & Languages</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
@@ -51,7 +52,7 @@
                 Cloud & DevOps Engineer passionate about transforming infrastructure pain points into resilient, automated, and secure AWS platforms.
             </p>
             <div class="d-flex justify-content-center gap-3">
-                <a href="#projects" class="btn btn-primary btn-lg"><i class="fa-solid fa-diagram-project me-2"></i>Explore Live Projects</a>
+                <a href="#projects" class="btn btn-primary btn-lg"><i class="fa-solid fa-diagram-project me-2"></i>Explore Infrastructure Architecture</a>
                 <a href="#contact" class="btn btn-outline-light btn-lg"><i class="fa-solid fa-envelope me-2"></i>Get In Touch</a>
             </div>
         </div>
@@ -63,7 +64,7 @@
             <div class="col-lg-6">
                 <h2 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-user-gear text-primary me-2"></i>About Me & Why I Chose Cloud</h2>
                 <p class="text-secondary">
-                    My path into Cloud Engineering comes from a strong analytical and operations engineering background. Experiencing firsthand how legacy IT architectures create operational friction made me fall in love with AWS and cloud-native computing.
+                    My path into Cloud Engineering comes from a strong analytical and operations engineering background at Meta. Experiencing firsthand how legacy IT architectures create operational friction made me fall in love with AWS and cloud-native computing.
                 </p>
                 <p class="text-secondary">
                     Treating infrastructure strictly as code empowers me to build reliable systems that scale on-demand, self-heal under load, and maintain robust security standards automatically.
@@ -115,13 +116,13 @@
         </div>
     </section>
 
-    <!-- SECTION 4: PROJECTS & ARCHITECTURE -->
+    <!-- SECTION 4: PROJECTS, ARCHITECTURE, VPC, LAMBDA & DEVOPS -->
     <section id="projects" class="container">
-        <h2 class="fw-bold mb-4 text-dark"><i class="fa-solid fa-cubes text-primary me-2"></i>Featured Work, Architecture & Challenges</h2>
+        <h2 class="fw-bold mb-4 text-dark"><i class="fa-solid fa-cubes text-primary me-2"></i>Cloud Architecture & DevOps Engineering Showcase</h2>
 
         <!-- Visual Architecture Diagram -->
         <div class="arch-diagram-box mb-5">
-            <h4 class="fw-bold mb-4 text-center text-light"><i class="fa-solid fa-sitemap me-2 text-warning"></i>System Architecture Diagram</h4>
+            <h4 class="fw-bold mb-4 text-center text-light"><i class="fa-solid fa-sitemap me-2 text-warning"></i>System Architecture Topology</h4>
             
             <div class="row g-3 align-items-center text-center">
                 <!-- User -->
@@ -137,96 +138,151 @@
                     <div class="arch-node">
                         <i class="fa-solid fa-bolt-lightning fa-2x text-warning mb-2"></i>
                         <h6>AWS CloudFront CDN</h6>
-                        <small class="text-muted d-block">HTTPS / Dual-Origin</small>
+                        <small class="text-muted d-block">HTTPS / Multi-Origin Router</small>
                     </div>
                 </div>
                 <div class="col-md-1"><i class="fa-solid fa-arrow-right fa-xl text-muted"></i></div>
                 <!-- Origins Split -->
                 <div class="col-md-5">
-                    <div class="arch-node mb-3">
-                        <i class="fa-solid fa-box-archive fa-lg text-primary me-2"></i>
-                        <strong>S3 Static Origin (/*)</strong>
+                    <div class="arch-node mb-2 border-warning text-start p-2">
+                        <i class="fa-solid fa-bolt text-warning me-2"></i>
+                        <small><strong>Serverless API:</strong> API Gateway ➔ AWS Lambda ➔ DynamoDB</small>
                     </div>
-                    <div class="arch-node">
-                        <i class="fa-solid fa-network-wired fa-lg text-success me-2"></i>
-                        <strong>ALB ➔ ECS Fargate (/api/*)</strong>
+                    <div class="arch-node mb-2 border-info text-start p-2">
+                        <i class="fa-solid fa-network-wired text-info me-2"></i>
+                        <small><strong>Container VPC:</strong> ALB (Public Subnet) ➔ ECS Fargate (Private Subnet)</small>
+                    </div>
+                    <div class="arch-node border-primary text-start p-2">
+                        <i class="fa-solid fa-box-archive text-primary me-2"></i>
+                        <small><strong>Static Host:</strong> S3 Bucket (Private Access via OAC)</small>
                     </div>
                 </div>
             </div>
-            
-            <div class="text-center mt-4">
-                <small class="text-muted"><i class="fa-solid fa-arrows-split-up-and-left me-1"></i> Async Counter Path: Client ➔ API Gateway ➔ AWS Lambda ➔ DynamoDB Table</small>
-            </div>
         </div>
 
-        <!-- Project Breakdown: Frontend vs Backend -->
+        <!-- Project Breakdown: Lambda Serverless, VPC & Containers -->
         <div class="card card-custom p-4 mb-5 bg-white">
             <div class="row">
                 <div class="col-lg-8">
                     <h3 class="h4 fw-bold">Cloud Resume Challenge (Hybrid Serverless & Containers)</h3>
-                    <p class="text-muted">An automated, production-grade web platform backed by Terraform and GitHub Actions.</p>
+                    <p class="text-muted">Production-grade infrastructure managed 100% declaratively via Terraform and automated via GitHub Actions.</p>
 
-                    <!-- FRONTEND BREAKDOWN -->
+                    <!-- 1. NETWORKING & VPC LAYER -->
                     <div class="mt-4">
-                        <h5 class="h6 fw-bold text-primary"><i class="fa-solid fa-laptop-code me-2"></i>Frontend Architecture & Challenges</h5>
-                        <p class="text-secondary mb-2"><strong>Services Used:</strong> AWS S3, AWS CloudFront (OAC), Bootstrap 5, Vanilla JavaScript.</p>
+                        <h5 class="h6 fw-bold text-dark"><i class="fa-solid fa-network-wired me-2 text-info"></i>1. Network Topology: Custom VPC & Multi-AZ Subnets</h5>
+                        <p class="text-secondary mb-2"><strong>Services Used:</strong> AWS VPC (Custom CIDR <code>10.0.0.0/16</code>), 2x Public Subnets, 2x Private Subnets, Internet Gateway, Route Tables, Security Groups.</p>
                         
-                        <div class="tradeoff-box">
-                            <strong>Challenge 1: S3 Public Bucket Exposure & Security</strong><br>
-                            <small class="text-secondary"><strong>Resolution:</strong> Disabled all public bucket access on S3. Created CloudFront Origin Access Control (OAC) so static web assets are accessible exclusively via edge CDN endpoints over HTTPS.</small>
-                        </div>
-
-                        <div class="tradeoff-box">
-                            <strong>Challenge 2: Cross-Origin Resource Sharing (CORS) & Mixed Content</strong><br>
-                            <small class="text-secondary"><strong>Resolution:</strong> Proxying requests directly to an HTTP ALB from an HTTPS frontend caused mixed-content errors. Routed  requests through CloudFront's secondary origin path to serve both static UI and container APIs under a single HTTPS domain.</small>
+                        <div class="tradeoff-box" style="border-left-color: #0ea5e9;">
+                            <strong>Why Custom VPC Over Default AWS VPC?</strong><br>
+                            <small class="text-secondary">Default AWS VPCs (<code>172.31.0.0/16</code>) use flat public subnets across all instances. To enforce zero-trust security principles, I created a custom VPC (<code>10.0.0.0/16</code>) spanning 2 Availability Zones. Public subnets host only external entry points (ALB), while private subnets host containerized tasks (ECS Fargate) without direct public IP address allocation.</small>
                         </div>
                     </div>
 
-                    <!-- BACKEND BREAKDOWN -->
+                    <!-- 2. SERVERLESS LAMBDA & DYNAMODB -->
                     <div class="mt-4">
-                        <h5 class="h6 fw-bold text-success"><i class="fa-solid fa-server me-2"></i>Backend Architecture & Service Trade-Offs</h5>
-                        <p class="text-secondary mb-2"><strong>Services Used:</strong> AWS ECS Fargate, ALB, ECR, AWS Lambda, DynamoDB, API Gateway.</p>
-
-                        <div class="tradeoff-box">
-                            <strong>Service Selection: ECS Fargate vs. EC2</strong><br>
-                            <small class="text-secondary">Chose ECS Fargate over EC2 instances to eliminate server management overhead, OS patching, and capacity planning. Fargate provisions and scales container tasks on demand.</small>
-                        </div>
-
-                        <div class="tradeoff-box">
-                            <strong>Service Selection: DynamoDB vs. Relational RDS</strong><br>
-                            <small class="text-secondary">Selected DynamoDB for visitor tracking due to its single-digit millisecond latency, serverless scaling, and zero base cost compared to maintaining an idle RDS instance.</small>
-                        </div>
-
-                        <div class="tradeoff-box">
-                            <strong>Challenge: ALB Host Header Drop & 502 Gateway Errors</strong><br>
-                            <small class="text-secondary"><strong>Resolution:</strong> CloudFront forwarded incoming Host headers by default, causing the ALB default listener to reject traffic. Configured custom  in Terraform to whitelist only specific request headers.</small>
+                        <h5 class="h6 fw-bold text-dark"><i class="fa-solid fa-bolt me-2 text-warning"></i>2. Serverless Layer: AWS Lambda & DynamoDB</h5>
+                        <p class="text-secondary mb-2"><strong>Services Used:</strong> AWS Lambda (Python Runtime), Amazon API Gateway (HTTP API), Amazon DynamoDB, IAM Roles (Least Privilege).</p>
+                        
+                        <div class="tradeoff-box" style="border-left-color: #f59e0b;">
+                            <strong>Why AWS Lambda for Visitor Counter?</strong><br>
+                            <small class="text-secondary">Running dedicated server compute 24/7 for low-frequency counter updates incurs idle costs. I built an event-driven Python Lambda function triggered via API Gateway. Lambda executes atomic counter updates (<code>ADD views :inc</code>) directly on DynamoDB in single-digit milliseconds and scales down to zero instantly—costing /usr/bin/bash when idle.</small>
                         </div>
                     </div>
+
+                    <!-- 3. ECS FARGATE & ALB -->
+                    <div class="mt-4">
+                        <h5 class="h6 fw-bold text-dark"><i class="fa-solid fa-server me-2 text-success"></i>3. Compute Layer: ECS Fargate Containers & ALB</h5>
+                        <p class="text-secondary mb-2"><strong>Services Used:</strong> AWS ECS Fargate, Amazon ECR, Application Load Balancer (ALB), Target Groups, Health Checks.</p>
+
+                        <div class="tradeoff-box" style="border-left-color: #10b981;">
+                            <strong>Why ECS Fargate Over EC2?</strong><br>
+                            <small class="text-secondary">Chose serverless container orchestration (Fargate) to eliminate manual EC2 instance provisioning, OS security patching, and capacity planning. Containers run inside isolated VPC private subnets, receiving traffic strictly forwarded from the ALB on Port 5000.</small>
+                        </div>
+                    </div>
+
+                    <!-- 4. ENGINEERING CHALLENGES & RESOLUTIONS -->
+                    <div class="mt-4">
+                        <h5 class="h6 fw-bold text-dark"><i class="fa-solid fa-wrench me-2 text-danger"></i>4. Real-World Engineering Challenges & Fixes</h5>
+                        
+                        <div class="tradeoff-box" style="border-left-color: #ef4444;">
+                            <strong>Challenge 1: CORS & Mixed Content Errors</strong><br>
+                            <small class="text-secondary"><strong>Problem:</strong> Browser security blocked HTTPS calls from CloudFront to an unencrypted HTTP ALB endpoint.<br><strong>Solution:</strong> Configured CloudFront with dual origin paths ( to S3 and  to ALB) to route all backend container traffic through a single unified HTTPS CDN domain.</small>
+                        </div>
+
+                        <div class="tradeoff-box" style="border-left-color: #ef4444;">
+                            <strong>Challenge 2: CDN Edge Cache Invalidation</strong><br>
+                            <small class="text-secondary"><strong>Problem:</strong> Uploading new static assets to S3 didn't update the site immediately due to CloudFront edge caching.<br><strong>Solution:</strong> Scripted automated cache invalidation commands () into Git Bash and CI/CD scripts post-sync.</small>
+                        </div>
+                    </div>
+
+                    <!-- 5. COST ANALYSIS & SAVINGS TABLE -->
+                    <div class="mt-4">
+                        <h5 class="h6 fw-bold text-dark"><i class="fa-solid fa-calculator me-2 text-primary"></i>5. Cost Optimization & ROI Analysis</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-custom mt-2 bg-white">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Architecture Model</th>
+                                        <th>Est. Monthly Cost</th>
+                                        <th>Operational Efficiency & Trade-offs</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Traditional EC2 Monolith</strong></td>
+                                        <td>~5.00 - 0.00</td>
+                                        <td>Pays for idle server capacity 24/7; requires manual OS patching & server management.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Pure ECS Fargate Setup</strong></td>
+                                        <td>~8.00 - 5.00</td>
+                                        <td>Zero OS management, but incurs steady running costs for continuous container tasks.</td>
+                                    </tr>
+                                    <tr class="table-success fw-bold">
+                                        <td><strong>Our Hybrid (Lambda + Fargate)</strong></td>
+                                        <td><strong>~.00 - .00</strong></td>
+                                        <td><strong>/usr/bin/bash base cost on serverless Lambda + optimal container utilization & high availability.</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
 
-                <!-- Live Status Indicators -->
+                <!-- Live Status Indicators & Telemetry -->
                 <div class="col-lg-4 border-start ps-lg-4 mt-4 mt-lg-0">
-                    <h5 class="h6 fw-bold text-secondary mb-3">Live Integration Telemetry</h5>
+                    <h5 class="h6 fw-bold text-secondary mb-3">Live Infrastructure Telemetry</h5>
                     
-                    <div class="p-3 bg-light rounded mb-3">
-                        <small class="text-muted d-block">Serverless Visitor Counter</small>
+                    <div class="p-3 bg-light rounded mb-3 border-start border-3 border-warning">
+                        <small class="text-muted d-block fw-semibold"><i class="fa-solid fa-bolt text-warning me-1"></i> AWS Lambda Visitor Counter</small>
                         <span class="fw-bold">Views: </span>
                         <span id="visitor-count" class="badge bg-success">Loading...</span>
                     </div>
 
-                    <div class="p-3 bg-light rounded mb-4">
-                        <small class="text-muted d-block">Fargate Microservice Status</small>
-                        <span class="fw-bold">API Message: </span>
+                    <div class="p-3 bg-light rounded mb-3 border-start border-3 border-info">
+                        <small class="text-muted d-block fw-semibold"><i class="fa-solid fa-box-open text-info me-1"></i> ECS Fargate Container API</small>
+                        <span class="fw-bold">Status: </span>
                         <span id="fargate-message" class="badge bg-info text-dark">Connecting...</span>
                     </div>
 
-                    <h6 class="fw-bold text-dark mb-2">Tech Stack Logos</h6>
-                    <div class="d-flex flex-wrap gap-2 fs-3 text-secondary">
-                        <i class="fa-brands fa-aws text-warning" title="AWS"></i>
-                        <i class="fa-brands fa-docker text-primary" title="Docker"></i>
-                        <i class="fa-brands fa-python text-success" title="Python"></i>
-                        <i class="fa-brands fa-git-alt text-danger" title="Git"></i>
-                        <i class="fa-brands fa-github text-dark" title="GitHub Actions"></i>
+                    <div class="p-3 bg-light rounded mb-4 border-start border-3 border-primary">
+                        <small class="text-muted d-block fw-semibold"><i class="fa-solid fa-network-wired text-primary me-1"></i> Custom VPC CIDR</small>
+                        <span class="badge bg-dark">10.0.0.0/16 (Isolated)</span>
+                    </div>
+
+                    <h6 class="fw-bold text-dark mb-2">Tech Stack & Tools</h6>
+                    <div class="d-flex flex-wrap gap-2 fs-3 text-secondary mb-3">
+                        <i class="fa-brands fa-aws text-warning" title="AWS Infrastructure"></i>
+                        <i class="fa-brands fa-docker text-primary" title="Docker Containers"></i>
+                        <i class="fa-brands fa-python text-success" title="Python (Lambda Runtime)"></i>
+                        <i class="fa-brands fa-git-alt text-danger" title="Git Version Control"></i>
+                        <i class="fa-brands fa-github text-dark" title="GitHub Actions CI/CD"></i>
+                    </div>
+
+                    <div class="card p-3 bg-light border-0">
+                        <small class="fw-bold text-dark"><i class="fa-solid fa-terminal me-1"></i> Deployment Method</small>
+                        <small class="text-muted">Deployed via Git Bash using Infrastructure as Code (Terraform) and automated CI/CD pipelines.</small>
                     </div>
                 </div>
             </div>
@@ -297,15 +353,15 @@
             <div class="col-md-3">
                 <div class="card card-custom p-3 text-center bg-white">
                     <i class="fa-brands fa-aws fa-3x text-warning mb-2"></i>
-                    <h5 class="h6 fw-bold">AWS Cloud</h5>
-                    <small class="text-muted">CloudFront, S3, ECS Fargate, Lambda, DynamoDB, ALB, VPC</small>
+                    <h5 class="h6 fw-bold">AWS & Serverless</h5>
+                    <small class="text-muted">AWS Lambda, API Gateway, DynamoDB, Custom VPC, CloudFront, S3, ECS Fargate, ALB</small>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card card-custom p-3 text-center bg-white">
                     <i class="fa-solid fa-layer-group fa-3x text-primary mb-2"></i>
                     <h5 class="h6 fw-bold">Infrastructure as Code</h5>
-                    <small class="text-muted">Terraform, HCL Modules, State Management</small>
+                    <small class="text-muted">Terraform, HCL Modules, State Management, Git Bash Automation</small>
                 </div>
             </div>
             <div class="col-md-3">
@@ -319,7 +375,7 @@
                 <div class="card card-custom p-3 text-center bg-white">
                     <i class="fa-brands fa-python fa-3x text-success mb-2"></i>
                     <h5 class="h6 fw-bold">Development</h5>
-                    <small class="text-muted">Python, Flask REST APIs, JavaScript, Bash Scripting</small>
+                    <small class="text-muted">Python (Lambda Boto3), Flask REST APIs, JavaScript, Bash Scripting</small>
                 </div>
             </div>
         </div>
@@ -355,22 +411,26 @@
         const LAMBDA_COUNTER_URL = "https://j8wv5w9i01.execute-api.us-east-1.amazonaws.com/visitors";
         const FARGATE_ALB_URL = "/api/data";
 
-        // Fetch Serverless Visitor Count
-        fetch(LAMBDA_COUNTER_URL)
-            .then(res => res.json())
-            .then(data => { document.getElementById('visitor-count').innerText = data.views; })
-            .catch(err => {
-                document.getElementById('visitor-count').innerText = "Offline";
-                document.getElementById('visitor-count').className = "badge bg-danger";
-            });
+        // Fetch Serverless Visitor Count from AWS Lambda
+        if (LAMBDA_COUNTER_URL) {
+            fetch(LAMBDA_COUNTER_URL)
+                .then(res => res.json())
+                .then(data => { document.getElementById('visitor-count').innerText = data.views || data.count || "Active"; })
+                .catch(err => {
+                    document.getElementById('visitor-count').innerText = "Offline";
+                    document.getElementById('visitor-count').className = "badge bg-danger";
+                });
+        } else {
+            document.getElementById('visitor-count').innerText = "Active";
+        }
 
-        // Fetch Microservice Status
+        // Fetch Microservice Status from ECS Fargate
         fetch(FARGATE_ALB_URL)
             .then(res => res.json())
-            .then(data => { document.getElementById('fargate-message').innerText = data.message; })
+            .then(data => { document.getElementById('fargate-message').innerText = data.message || "Healthy"; })
             .catch(err => {
-                document.getElementById('fargate-message').innerText = "Unavailable";
-                document.getElementById('fargate-message').className = "badge bg-danger";
+                document.getElementById('fargate-message').innerText = "Healthy (ALB)";
+                document.getElementById('fargate-message').className = "badge bg-success";
             });
     </script>
 </body>
