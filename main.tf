@@ -664,3 +664,40 @@ resource "aws_route53_record" "www" {
     evaluate_target_health = false
   }
 }
+
+# ------------------------------------------------------------------------------
+# S3 BUCKET POLICY & OAC FIX FOR CLOUDFRONT 403 ERROR
+# ------------------------------------------------------------------------------
+
+# 1. CloudFront Origin Access Control (OAC)
+resource "aws_cloudfront_origin_access_control" "oac" {
+  name                              = "s3-oac-bouchrayakory"
+  description                       = "OAC for S3 portfolio bucket"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
+# 2. Allow CloudFront to read from S3 Bucket
+data "aws_iam_policy_document" "s3_policy" {
+  statement {
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.portfolio.arn}/*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [aws_cloudfront_distribution.s3_distribution.arn]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "allow_cloudfront" {
+  bucket = aws_s3_bucket.portfolio.id
+  policy = data.aws_iam_policy_document.s3_policy.json
+}
