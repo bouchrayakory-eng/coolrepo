@@ -91,7 +91,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       query_string = true
       # Do NOT forward all headers (*); explicitly state needed headers
       # to ensure CloudFront passes the ALB's original host domain
-      headers      = ["Accept", "Authorization", "Origin"]
+      headers = ["Accept", "Authorization", "Origin"]
       cookies {
         forward = "all"
       }
@@ -112,7 +112,9 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn      = aws_acm_certificate_validation.cert_valid.certificate_arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
   }
 }
 
@@ -140,8 +142,8 @@ resource "aws_s3_bucket_policy" "allow_cloudfront" {
 
 # 4. OIDC Provider and IAM Role
 resource "aws_iam_openid_connect_provider" "github" {
-  url             = "https://token.actions.githubusercontent.com"
-  client_id_list  = ["sts.amazonaws.com"]
+  url            = "https://token.actions.githubusercontent.com"
+  client_id_list = ["sts.amazonaws.com"]
   thumbprint_list = [
     "6938fd4d98bab03faadb97b34396831e3780aea1",
     "1c58a2a851ce2c792f411236b08e85614280111f",
@@ -583,3 +585,82 @@ output "cloudfront_distribution_id" {
 }
 
 
+
+# ------------------------------------------------------------------------------
+# ROUTE 53 & ACM AUTOMATED SSL VALIDATION FOR BOUCHRAYAKORY.COM
+# ------------------------------------------------------------------------------
+
+# 1. Fetch the Route 53 Hosted Zone created during domain registration
+data "aws_route53_zone" "primary" {
+  name         = "bouchrayakory.com."
+  private_zone = false
+}
+
+# 2. ACM Provider Override (CloudFront REQUIRES us-east-1)
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
+}
+
+# 3. Request ACM SSL Certificate in us-east-1
+resource "aws_acm_certificate" "cert" {
+  provider                  = aws.us_east_1
+  domain_name               = "bouchrayakory.com"
+  validation_method         = "DNS"
+  subject_alternative_names = ["*.bouchrayakory.com"]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# 4. Automatically Create DNS CNAME Validation Records in Route 53
+resource "aws_route53_record" "cert_validation" {
+  for_each = {
+    for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = data.aws_route53_zone.primary.zone_id
+}
+
+# 5. Wait for ACM Validation (Resolves "Pending Validation" automatically)
+resource "aws_acm_certificate_validation" "cert_valid" {
+  provider                = aws.us_east_1
+  certificate_arn         = aws_acm_certificate.cert.arn
+  validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
+}
+
+# 6. Apex Alias Record (bouchrayakory.com -> CloudFront)
+resource "aws_route53_record" "apex" {
+  zone_id = data.aws_route53_zone.primary.zone_id
+  name    = "bouchrayakory.com"
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.s3_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+
+# 7. Subdomain Alias Record (www.bouchrayakory.com -> CloudFront)
+resource "aws_route53_record" "www" {
+  zone_id = data.aws_route53_zone.primary.zone_id
+  name    = "www.bouchrayakory.com"
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.s3_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
